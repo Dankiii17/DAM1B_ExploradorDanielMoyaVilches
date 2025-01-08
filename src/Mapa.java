@@ -29,7 +29,8 @@ public class Mapa {
         colocarJugador();
     }
     private void colocarJugador(){
-        int fila, columna;
+        int fila;
+        int columna;
         do {
             fila = (int) (Math.random()*6);
             columna =0;
@@ -89,6 +90,9 @@ public class Mapa {
         System.out.println("Bienvenido al juego del explorador!");
         System.out.println("****************************************************************");
         System.out.println("Introduzca su nombre:");
+        Scanner scanner = new Scanner(System.in);
+        String nombreJugador = scanner.nextLine();
+        Explorador explorador = new Explorador(nombreJugador);
         while (partida){
             mostrar();
             if(posJugador.getCoordenadaCol()==enemigos[0].getPosicionActual().getCoordenadaCol() && posJugador.getCoordenadaFila()==enemigos[1].getPosicionActual().getCoordenadaFila()
@@ -106,32 +110,47 @@ public class Mapa {
             }
             System.out.println("¿Hacia donde quieres moverte?");
             System.out.println("W=arriba, S=Abajo, A=Izquierda, D=Derecha");
-            Scanner scanner = new Scanner(System.in);
-            String movimiento=scanner.next().toUpperCase();
-            do{
-
-                System.out.println("Introduce una direccion valida!");
-
-        }while(scanner.next()!="W" && scanner.next()!="S" && scanner.next()!="A" && scanner.next()!="D");
-            if (movimiento.equals("W")){
-                Explorador.moverse(1);
-            }else if (movimiento.equals("S")){
-                Explorador.moverse(2);
-            } else if (movimiento.equals("A")) {
-                Explorador.moverse(4);
-            }else if (movimiento.equals("D")){
-                Explorador.moverse(3);
+            String movimiento="";
+           boolean direccionvalida=false;
+           while(!direccionvalida){
+               movimiento=scanner.next().toUpperCase();
+               if(movimiento.equals("W") || movimiento.equals("S") || movimiento.equals("A") || movimiento.equals("D")){
+                   direccionvalida=true;
+               }else{
+                   System.out.println("Introduce una dirección válida (W, S, A, D)");
+               }
+           }
+            int filaActual = explorador.getPosicionactual().getCoordenadaFila();
+            int colActual = explorador.getPosicionactual().getCoordenadaCol();
+            if (movimiento.equals("W") && filaActual > 0) {
+                explorador.moverse(Explorador.ARRIBA);
+            } else if (movimiento.equals("S") && filaActual < tablero.length - 1) {
+                explorador.moverse(Explorador.ABAJO);
+            } else if (movimiento.equals("A") && colActual > 0) {
+                explorador.moverse(Explorador.IZQUIERDA);
+            } else if (movimiento.equals("D") && colActual < tablero[0].length - 1) {
+                explorador.moverse(Explorador.DERECHA);
+            } else {
+                System.out.println("Movimiento inválido");
+                continue;
             }
-            tablero[posJugador.getCoordenadaFila()][posJugador.getCoordenadaCol()]=' ';
-            for (int i = 0; i < enemigos.length ; i++) {
-                tablero[enemigos[i].getPosicionActual().getCoordenadaFila()][enemigos[i].getPosicionActual().getCoordenadaCol()]=' ';
-                enemigos[i].moverse();
-                tablero[enemigos[i].getPosicionActual().getCoordenadaFila()][enemigos[i].getPosicionActual().getCoordenadaCol()]='E';
-
+            int nuevaFila = explorador.getPosicionactual().getCoordenadaFila();
+            int nuevaCol = explorador.getPosicionactual().getCoordenadaCol();
+            if (nuevaFila < tablero.length && nuevaCol < tablero[0].length) {
+                tablero[filaActual][colActual] = ' ';
+                tablero[nuevaFila][nuevaCol] = 'J';
             }
-            tablero[posJugador.getCoordenadaFila()][posJugador.getCoordenadaCol()]='J';
-
-
+            for (int i = 0; i < enemigos.length; i++) {
+                Posicion posEnemigo = enemigos[i].getPosicionActual();
+                if (posEnemigo.getCoordenadaFila() < tablero.length && posEnemigo.getCoordenadaCol() < tablero[0].length) {
+                    tablero[posEnemigo.getCoordenadaFila()][posEnemigo.getCoordenadaCol()] = ' ';
+                    enemigos[i].moverse();
+                    posEnemigo = enemigos[i].getPosicionActual();
+                    if (posEnemigo.getCoordenadaFila() < tablero.length && posEnemigo.getCoordenadaCol() < tablero[0].length) {
+                        tablero[posEnemigo.getCoordenadaFila()][posEnemigo.getCoordenadaCol()] = 'E';
+                    }
+                }
+            }
 
 
         }

@@ -1,10 +1,10 @@
 public class Explorador {
     private String nombre;
-    private static Posicion posicionactual;
-    private static final int ARRIBA=1;
-    private static final int ABAJO=2;
-    private static final int DERECHA=3;
-    private static final int IZQUIERDA=4;
+    private  Posicion posicionactual;
+    static final int ARRIBA=1;
+     static final int ABAJO=2;
+     static final int DERECHA=3;
+     static final int IZQUIERDA=4;
 
     public Explorador(String nombre){
         this.nombre=nombre;
@@ -23,23 +23,17 @@ public class Explorador {
     public void setPosicionactual(Posicion posicionactual) {
         this.posicionactual = posicionactual;
     }
-    public static void moverse(int direccion){
-        if (direccion==ARRIBA){
-            if (posicionactual.getCoordenadaFila()!=0){
-            posicionactual.setCoordenadaFila(posicionactual.getCoordenadaFila()-1);}
-            else {System.out.println("No puedes moverse hacia arriba.");}
-        } else if (direccion == ABAJO) {
-            if (posicionactual.getCoordenadaFila()!=5){
-            posicionactual.setCoordenadaFila(posicionactual.getCoordenadaFila()+1);}
-            else {System.out.println("No puedes moverse hacia abajo.");}
-        }else if (direccion == DERECHA) {
-            if (posicionactual.getCoordenadaCol()!=0){
-            posicionactual.setCoordenadaCol(posicionactual.getCoordenadaCol()+1);}
-            else {System.out.println("No puedes moverse hacia la derecha.");}
-        } else if (direccion == IZQUIERDA) {
-            if (posicionactual.getCoordenadaCol()!=19){
-            posicionactual.setCoordenadaCol(posicionactual.getCoordenadaCol()-1);}
-            else {System.out.println("No puedes moverse hacia la izquierda.");}
-        }
-    }
+    public void moverse(int direccion) {
+        int filaActual = posicionactual.getCoordenadaFila();
+        int colActual = posicionactual.getCoordenadaCol();
+        if (direccion == ARRIBA && filaActual > 0) {
+            posicionactual.setCoordenadaFila(filaActual - 1);
+        } else if (direccion == ABAJO && filaActual < 5) {
+            posicionactual.setCoordenadaFila(filaActual + 1);
+        } else if (direccion == DERECHA && colActual < 19) {
+            posicionactual.setCoordenadaCol(colActual + 1);
+        } else if (direccion == IZQUIERDA && colActual > 0) {
+            posicionactual.setCoordenadaCol(colActual - 1);
+        } else {
+            System.out.println("Movimiento inválido"); } }
 }
