@@ -1,15 +1,15 @@
 public class Explorador {
     private String nombre;
-    private Posicion posicionactual;
-    private final int ARRIBA=1;
-    private final int ABAJO=2;
-    private final int DERECHA=3;
-    private final int IZQUIERDA=4;
+    private static Posicion posicionactual;
+    private static final int ARRIBA=1;
+    private static final int ABAJO=2;
+    private static final int DERECHA=3;
+    private static final int IZQUIERDA=4;
 
     public Explorador(String nombre){
         this.nombre=nombre;
-        int fila= (int) (Math.random()*7+1);
-        this.posicionactual=new Posicion(fila,1);
+        int fila= (int) (Math.random()*7);
+        this.posicionactual=new Posicion(fila,0);
     }
 
     public String getNombre() {
@@ -23,15 +23,23 @@ public class Explorador {
     public void setPosicionactual(Posicion posicionactual) {
         this.posicionactual = posicionactual;
     }
-    public void moverse(int direccion){
+    public static void moverse(int direccion){
         if (direccion==ARRIBA){
-            posicionactual.setCoordenadaFila(posicionactual.getCoordenadaFila()-1);
+            if (posicionactual.getCoordenadaFila()!=0){
+            posicionactual.setCoordenadaFila(posicionactual.getCoordenadaFila()-1);}
+            else {System.out.println("No puedes moverse hacia arriba.");}
         } else if (direccion == ABAJO) {
-            posicionactual.setCoordenadaFila(posicionactual.getCoordenadaFila()+1);
+            if (posicionactual.getCoordenadaFila()!=5){
+            posicionactual.setCoordenadaFila(posicionactual.getCoordenadaFila()+1);}
+            else {System.out.println("No puedes moverse hacia abajo.");}
         }else if (direccion == DERECHA) {
-            posicionactual.setCoordenadaCol(posicionactual.getCoordenadaCol()+1);
+            if (posicionactual.getCoordenadaCol()!=0){
+            posicionactual.setCoordenadaCol(posicionactual.getCoordenadaCol()+1);}
+            else {System.out.println("No puedes moverse hacia la derecha.");}
         } else if (direccion == IZQUIERDA) {
-            posicionactual.setCoordenadaCol(posicionactual.getCoordenadaCol()-1);
+            if (posicionactual.getCoordenadaCol()!=19){
+            posicionactual.setCoordenadaCol(posicionactual.getCoordenadaCol()-1);}
+            else {System.out.println("No puedes moverse hacia la izquierda.");}
         }
     }
 }
